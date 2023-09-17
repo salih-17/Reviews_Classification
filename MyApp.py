@@ -92,12 +92,10 @@ paragraph = """
 <p style="text-align: justify;">Despite the growing interest in detecting false reviews, prior studies have not explored the capacity to detect fake reviews for diverse products, which require distinct consumer experiences. To overcome these problems, we proposed a website to detect fake reviews on e-commerce sites using the latest artificial intelligence technologies. We have employed a hybrid architecture model that combines the strengths of a Transformer (BERT and Roberta) and Convolutional Neural Networks (CNN) to effectively detect fake reviews.</p>
 """
 
-P2 = """
-
+paragraph2 = """
 <p><strong><u>Dedication</u></strong></p>
 <p>A very special thanks to my guide Prof. Dr. Hiren Joshi, and each member of the Department of Computer Science, Gujarat University. They helped me achieve nothing less than excellence in this work. I hope that this site will be useful to society as a whole and contribute to helping consumers make informed decisions and improving the credibility of online reviews. In the end, I declare that this website is my own original and independent work and does not infringe upon anyone&rsquo;s copyright or violate any other intellectual property rights.</p>
 """
-
 
 about = """
 <hr/>
@@ -131,7 +129,7 @@ with st.sidebar:
     # st.write(paragraph)
     st.write(about, unsafe_allow_html=True)
     st.write(paragraph, unsafe_allow_html=True)
-    st.write(P2, unsafe_allow_html=True)
+    st.write(paragraph2, unsafe_allow_html=True)
     st.write(p3, unsafe_allow_html=True)
 
 prompt = st.chat_input("Say something")
