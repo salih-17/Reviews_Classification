@@ -14,20 +14,27 @@ from numpy import argmax
 from scipy import stats as stt
 import pandas as pd
 # -------------------------------
-with open('tokenizer.pickle', 'rb') as handle:
-    BiLSTM_tokenizer = pickle.load(handle)
-    
-BiLSTM_model = load_model('BiLSTM_CNN.h5')
 
-Bert_tokenizer = BertTokenizer.from_pretrained('BertTokenizer')
-Bert_model = load_model('BertCnn.h5')
+@st.cache (allow_output_mutation = True)
+def Import_Models():
+    with open('tokenizer.pickle', 'rb') as handle:
+        BiLSTM_tokenizer = pickle.load(handle)
 
-# Load BERT tokenizer
-Robert_tokenizer = RobertaTokenizer.from_pretrained('RoBertTokenizer')
-RoBert_model = load_model('RoBertCnn.h5')
+    BiLSTM_model = load_model('BiLSTM_CNN.h5')
+
+    Bert_tokenizer = BertTokenizer.from_pretrained('BertTokenizer')
+    Bert_model = load_model('BertCnn.h5')
+
+    # Load BERT tokenizer
+    Robert_tokenizer = RobertaTokenizer.from_pretrained('RoBertTokenizer')
+    RoBert_model = load_model('RoBertCnn.h5')
+    return  BiLSTM_tokenizer , BiLSTM_model , Bert_tokenizer , Bert_model , Robert_tokenizer , RoBert_model
 # -------------------------------
+BiLSTM_tokenizer , BiLSTM_model , Bert_tokenizer , Bert_model , Robert_tokenizer , RoBert_model = Import_Models()
+
 Class = {0:'Non-Spam' , 1 : 'Spam'}
 # -------------------------------
+
 def BiLSTM(text):
     sequences = BiLSTM_tokenizer.texts_to_sequences(text)
     sequences = sequence.pad_sequences(sequences, maxlen=50)
