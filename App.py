@@ -87,18 +87,31 @@ def calssification (text):
 
 #---------------------------------------------------------------------
 
+paragraph = """
+Despite the growing interest in detecting false reviews, prior studies have not explored the capacity to detect fake reviews for diverse products, which require distinct consumer experiences. To overcome these problems, we proposed a website to detect fake reviews on e-commerce sites using the latest artificial intelligence technologies.
+"""
+
+with st.sidebar:
+    st.title(" :blue[Hybrid Spam Checker]")
+    #st.sidebar.image("M.png", use_column_width=True )
+    st.caption("Maysara Mazin Alsaad (PhD Candidate)")
+    st.write(paragraph)
+
+
 prompt = st.chat_input("Say something")
 if prompt:
-    st.write('Input:')
-    st.write(prompt)
-
-    st.write('Cleaned Text:')
+    st.write(f'Input: {prompt}')
     CleanedText = clean (prompt)
-    st.write(CleanedText)
+    st.write(f'Cleaned Text: {CleanedText}')
 
     st.write("Result:")
+
     CL , df = calssification([CleanedText])
-    st.warning(CL , icon="⚠️")
+
+    if CL == "Spam":
+        st.error('Spam', icon="⛔")  
+    else:
+        st.success('Non-Spam', icon="✅")
 
     st.write("The probabilities of classifiers")
     st.dataframe(df)
