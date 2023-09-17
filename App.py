@@ -100,11 +100,20 @@ with st.sidebar:
 
 prompt = st.chat_input("Say something")
 if prompt:
-    st.write(f'Input: {prompt}')
-    CleanedText = clean (prompt)
-    st.write(f'Cleaned Text: {CleanedText}')
 
-    st.write("Result:")
+    new_title = '<p style="font-family:Calibri (Body); color:#F8931F; font-size: 18px;">Input: </p>'
+    st.markdown(new_title, unsafe_allow_html=True)
+    st.write(prompt)
+
+
+    CleanedText = clean (prompt)
+    new_title = '<p style="font-family:Calibri (Body); color:#F8931F; font-size: 18px;">Cleaned Text: </p>'
+    st.markdown(new_title, unsafe_allow_html=True)
+    st.write(CleanedText)
+
+    new_title = '<p style="font-family:Calibri (Body); color:#F8931F; font-size: 18px;">Result: </p>'
+    st.markdown(new_title, unsafe_allow_html=True)
+
 
     CL , df = calssification([CleanedText])
 
@@ -113,5 +122,7 @@ if prompt:
     else:
         st.success('Non-Spam', icon="✅")
 
-    st.write("The probabilities of classifiers")
+
+    new_title = '<p style="font-family:Calibri (Body); color:#F8931F; font-size: 18px;">The probabilities of classifiers: </p>'
+    st.markdown(new_title, unsafe_allow_html=True)
     st.dataframe(df)
