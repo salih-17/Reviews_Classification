@@ -75,7 +75,7 @@ def calssification (text):
 
     ix = ['CNN','Hybrid Bert-CNN', 'Hybrid RoBerta-CNN']
 
-    columns = {'Non-Spam':[Bert_H , BiLSTM_H , Roberta_H  ] , 'Spam':[Bert_S ,  BiLSTM_S , Roberta_S]}
+    columns = {'Non-Spam':[Roberta_H  , BiLSTM_H , Bert_H  ] , 'Spam':[Roberta_S ,  BiLSTM_S , Bert_S]}
 
     df = pd.DataFrame(columns  , index=ix )
 
