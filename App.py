@@ -64,18 +64,18 @@ def calssification (text):
     Result = Class[stt.mode ([BiLSTM_output ,Bert_output ,RoBertCNN_output  ])[0][0]]
 
     # Creat the dataframe
-    BiLSTM_H = int (BiLSTM_Result[0][0]*100) 
-    BiLSTM_S = int (BiLSTM_Result[0][1]*100)
+    BiLSTM_H = round (BiLSTM_Result[0][0]*100 ,1) 
+    BiLSTM_S = round (BiLSTM_Result[0][1]*100,1)
 
-    Bert_H = int (Bert_Result[0][0]*100) 
-    Bert_S = int (Bert_Result[0][1]*100)
+    Bert_H = round (Bert_Result[0][0]*100,1) 
+    Bert_S = round (Bert_Result[0][1]*100,1)
 
-    Roberta_H = int(RoBertCNN_Result[0][0]*100) 
-    Roberta_S = int (RoBertCNN_Result[0][1]*100)
+    Roberta_H = round(RoBertCNN_Result[0][0]*100,1) 
+    Roberta_S = round (RoBertCNN_Result[0][1]*100,1)
 
-    ix = ['BiLSTM','Bert','RoBerta']
+    ix = ['CNN','Hybrid Bert-CNN', 'Hybrid RoBerta-CNN']
 
-    columns = {'Non-Spam':[BiLSTM_H ,Bert_H ,  Roberta_H] , 'Spam':[BiLSTM_S ,Bert_S ,  Roberta_S]}
+    columns = {'Non-Spam':[Bert_H   , BiLSTM_H , Roberta_H  ] , 'Spam':[Bert_S,  BiLSTM_S , Roberta_S]}
 
     df = pd.DataFrame(columns  , index=ix )
 
@@ -88,25 +88,67 @@ def calssification (text):
 #---------------------------------------------------------------------
 
 paragraph = """
-Despite the growing interest in detecting false reviews, prior studies have not explored the capacity to detect fake reviews for diverse products, which require distinct consumer experiences. To overcome these problems, we proposed a website to detect fake reviews on e-commerce sites using the latest artificial intelligence technologies.
+<p><strong><u>The Goal of Designing This Website</u></strong></p>
+<p style="text-align: justify;">Despite the growing interest in detecting false reviews, prior studies have not explored the capacity to detect fake reviews for diverse products, which require distinct consumer experiences. To overcome these problems, we proposed a website to detect fake reviews on e-commerce sites using the latest artificial intelligence technologies. We have employed a hybrid architecture model that combines the strengths of a Transformer (BERT and Roberta) and Convolutional Neural Networks (CNN) to effectively detect fake reviews.</p>
+"""
+
+paragraph2 = """
+<p><strong><u>Dedication</u></strong></p>
+<p>A very special thanks to my guide Prof. Dr. Hiren Joshi, and each member of the Department of Computer Science, Gujarat University. They helped me achieve nothing less than excellence in this work. I hope that this site will be useful to society as a whole and contribute to helping consumers make informed decisions and improving the credibility of online reviews. In the end, I declare that this website is my own original and independent work and does not infringe upon anyone&rsquo;s copyright or violate any other intellectual property rights.</p>
+"""
+
+about = """
+<hr/>
+<p style="font-family:Calibri (Body); font-size: 14px;"><strong>Maysara Mazin Alsaad </strong>(PhD Candidate)</p>
+<p>Department of Computer Science</p>
+<p>Gujarat University, Ahmedabad, India.</p>
+<p><a href="mailto:maysara@gujaratuniversity.ac.in">maysara@gujaratuniversity.ac.in</a></p>
+<hr/>
+<p style="font-family:Calibri (Body); font-size: 14px;"><strong>Prof. Dr. Hiren Joshi</strong>(Guide)</p>
+<p>Department of Computer Science</p>
+<p>Gujarat University, Ahmedabad, India.</p>
+<p><a href="mailto:hdjoshi@gujaratuniversity.ac.in">maysara@gujaratuniversity.ac.in</a></p>
+<hr/>
+"""
+
+p3 = """
+<hr/>
+<p style="font-family:Calibri (Body); font-size: 14px;"><strong>Maysara Mazin Alsaad </strong>(PhD Candidate)</p>
+<p>Department of Computer Science</p>
+<p>Gujarat University, Ahmedabad, India.</p>
+<p>📧 maysara@gujaratuniversity.ac.in</a></p>
+<p>📞 +974 66457667</p>
+<hr/>
+
 """
 
 with st.sidebar:
     st.title(" :blue[Hybrid Spam Checker]")
     #st.sidebar.image("M.png", use_column_width=True )
-    st.caption("Maysara Mazin Alsaad (PhD Candidate)")
-    st.write(paragraph)
-
+    # st.caption("Maysara Mazin Alsaad (PhD Candidate)")
+    # st.write(paragraph)
+    st.write(about, unsafe_allow_html=True)
+    st.write(paragraph, unsafe_allow_html=True)
+    st.write(paragraph2, unsafe_allow_html=True)
+    st.write(p3, unsafe_allow_html=True)
 
 prompt = st.chat_input("Say something")
 if prompt:
-    st.write(f'Input: {prompt}')
+
+    new_title = '<p style="font-family:Calibri (Body); color:#F8931F; font-size: 18px;">Input: </p>'
+    st.markdown(new_title, unsafe_allow_html=True )
+    st.write(prompt)
 
 
     CleanedText = clean (prompt)
-    st.write(f'Cleaned Text: {CleanedText}')
+    new_title = '<p style="font-family:Calibri (Body); color:#F8931F; font-size: 18px;">Cleaned Text: </p>'
+    st.markdown(new_title, unsafe_allow_html=True)
+    st.write(CleanedText)
 
-    st.write("Result:")
+    new_title = '<p style="font-family:Calibri (Body); color:#F8931F; font-size: 18px;">Result: </p>'
+    st.markdown(new_title, unsafe_allow_html=True)
+
+
 
     CL , df = calssification([CleanedText])
 
@@ -115,5 +157,7 @@ if prompt:
     else:
         st.success('Non-Spam', icon="✅")
 
-    st.write("The probabilities of classifiers")
+    new_title = '<p style="font-family:Calibri (Body); color:#F8931F; font-size: 18px;">The probabilities of classifiers: </p>'
+    st.markdown(new_title, unsafe_allow_html=True)
+
     st.dataframe(df)
