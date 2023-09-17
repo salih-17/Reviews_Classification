@@ -120,3 +120,4 @@ wcwidth==0.2.5
 Werkzeug==2.3.7
 wrapt==1.14.1
 zipp==3.16.2
+html==1.6 
