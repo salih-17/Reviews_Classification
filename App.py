@@ -134,7 +134,6 @@ p3 = """
 
 """
 
-im = """<img src="Logo.png" width="100" height="100">"""
 
 with st.sidebar:
     st.sidebar.image("Asset_2.png" )
