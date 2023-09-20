@@ -63,19 +63,29 @@ def calssification (text):
     RoBertCNN_output=np.argmax(RoBertCNN_Result,axis=1)
     Result = Class[stt.mode ([BiLSTM_output ,Bert_output ,RoBertCNN_output  ])[0][0]]
 
+
     # Creat the dataframe
     BiLSTM_H = round (BiLSTM_Result[0][0]*100 ,1) 
-    BiLSTM_S = round (BiLSTM_Result[0][1]*100,1)
- 
     Bert_H = round (Bert_Result[0][0]*100,1) 
-    Bert_S = round (Bert_Result[0][1]*100,1)
-
     Roberta_H = round(RoBertCNN_Result[0][0]*100,1) 
+          
+    BiLSTM_S = round (BiLSTM_Result[0][1]*100,1) 
+    Bert_S = round (Bert_Result[0][1]*100,1)
     Roberta_S = round (RoBertCNN_Result[0][1]*100,1)
 
-    ix = ['CNN','Hybrid Bert-CNN', 'Hybrid RoBerta-CNN']
+    if Result == "Spam" :
+        Spam_values = [Bert_S,  BiLSTM_S , Roberta_S]
+        Spam_values = sorted (Spam_values)
+        Non_Spam_values = [round ( abs (100-i) ,1)  for i in Spam_values]
 
-    columns = {'Non-Spam':[Bert_H   , BiLSTM_H , Roberta_H  ] , 'Spam':[Bert_S,  BiLSTM_S , Roberta_S]}
+    else:
+        Non_Spam_values = [Bert_H   , BiLSTM_H , Roberta_H ]
+        Non_Spam_values =  sorted (Non_Spam_values)
+        Spam_values =     [round (abs (100-i),1)  for i in Non_Spam_values]
+        
+
+    ix = ['CNN' , 'Hybrid RoBerta-CNN' ,'Hybrid Bert-CNN']
+    columns = {'Non-Spam':Non_Spam_values , 'Spam':Spam_values}
 
     df = pd.DataFrame(columns  , index=ix )
 
@@ -98,17 +108,19 @@ paragraph2 = """
 """
 
 about = """
-<hr/>
-<p style="font-family:Calibri (Body); font-size: 14px;"><strong>Maysara Mazin Alsaad </strong>(PhD Candidate)</p>
-<p>Department of Computer Science</p>
-<p>Gujarat University, Ahmedabad, India.</p>
-<p><a href="mailto:maysara@gujaratuniversity.ac.in">maysara@gujaratuniversity.ac.in</a></p>
-<hr/>
-<p style="font-family:Calibri (Body); font-size: 14px;"><strong>Prof. Dr. Hiren Joshi</strong>(Guide)</p>
-<p>Department of Computer Science</p>
-<p>Gujarat University, Ahmedabad, India.</p>
-<p><a href="mailto:hdjoshi@gujaratuniversity.ac.in">maysara@gujaratuniversity.ac.in</a></p>
-<hr/>
+<p><strong>Maysara Mazin Alsaad&nbsp;</strong>(PhD Candidate):</p>
+<ul>
+<li>Department: Computer Science</li>
+<li>University: Gujarat University, Ahmedabad, India.</li>
+<li>Email: <a href="mailto:maysara@gujaratuniversity.ac.in" target="_blank" rel="noopener noreferrer">maysara@gujaratuniversity.ac.in</a></li>
+</ul>
+<p><strong>Prof. Dr. Hiren Joshi</strong>(Guide):</p>
+<ul>
+<li>Department: Computer Science</li>
+<li>University: Gujarat University, Ahmedabad, India.</li>
+<li>Email:&nbsp;<a href="mailto:hdjoshi@gujaratuniversity.ac.in" target="_blank" rel="noopener noreferrer">hdjoshi@gujaratuniversity.ac.in</a></li>
+</ul>
+<p>&nbsp;</p>
 """
 
 p3 = """
@@ -122,9 +134,14 @@ p3 = """
 
 """
 
+
 with st.sidebar:
+    st.sidebar.image("Asset_2.png" )
+    # st.sidebar.image("Logo.png", use_column_width=True )
     st.title(" :blue[Hybrid Spam Checker]")
-    #st.sidebar.image("M.png", use_column_width=True )
+    st.sidebar.image("Logo.png" )
+
+
     # st.caption("Maysara Mazin Alsaad (PhD Candidate)")
     # st.write(paragraph)
     st.write(about, unsafe_allow_html=True)
