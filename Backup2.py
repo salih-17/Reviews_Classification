@@ -92,8 +92,8 @@ def calssification (text):
 
     df = pd.DataFrame(columns  , index=ix )
 
-    df['NonSpam'] = df['NonSpam'].apply( lambda x : str(x) + '%')
-    df['Spam'] = df['Spam'].apply( lambda x : str(x) + '%')
+    # df['NonSpam'] = df['NonSpam'].apply( lambda x : str(x) + '%')
+    # df['Spam'] = df['Spam'].apply( lambda x : str(x) + '%')
     df.index.name = 'Classifier'
 
     Spam_avg = { "NonSpam":[ sum (Non_Spam_values) / 3] , "Spam": [ sum(Spam_values) / 3] }
@@ -125,7 +125,7 @@ about = """
 <li>University: Gujarat University, Ahmedabad, India.</li>
 <li>Email: <a href="mailto:maysara@gujaratuniversity.ac.in" target="_blank" rel="noopener noreferrer">maysara@gujaratuniversity.ac.in</a></li>
 </ul>
-<p><strong>Prof. Dr. Hiren Joshi</strong>(Guide):</p>
+<p><strong>Prof. Dr. Hiren Joshi</strong> (Guide):</p>
 <ul>
 <li>Department: Computer Science</li>
 <li>University: Gujarat University, Ahmedabad, India.</li>
@@ -178,30 +178,55 @@ if prompt:
 
 
 
-    CL , df, avg = calssification([CleanedText])
+    CL , df, avg2 = calssification([CleanedText])
+    avg = df.describe().loc[['mean' , 'min' , 'max']]
 
-    
+    df['NonSpam'] = df['NonSpam'].apply( lambda x : str(round (x,1)) + '%')
+    df['Spam'] = df['Spam'].apply( lambda x : str(round (x,1)) + '%')
+    avg['NonSpam'] = avg['NonSpam'].apply( lambda x : str(round (x,1)) + '%')
+    avg['Spam'] = avg['Spam'].apply( lambda x : str(round (x ,1)) + '%')
+
 
     if CL == "Spam":
         st.error('Spam', icon="⛔")  
     else:
         st.success('Non-Spam', icon="✅")
 
-    new_title = '<p style="font-family:Calibri (Body); color:#F8931F; font-size: 18px;">The probabilities of classifiers: </p>'
+    new_title = '<p style="font-family:Calibri (Body); color:#F8931F; font-size: 18px;">Probabilities & Statistics : </p>'
     st.markdown(new_title, unsafe_allow_html=True)
 
-    col1, col2 ,col3= st.columns(3)
+    colors = ["#16C60C", "#F03A17"]
 
-    #st.dataframe(df)
+    fig = make_subplots(
+        rows=1, cols=3,
+        specs=[[{"type": "table"}, {"type": "table"} , {"type": "bar"}]], 
+        vertical_spacing=0.1,column_widths=[0.6, 0.3 , 0.1],
+        subplot_titles=("The probabilities of classifiers", "Statistics", "Average"))
+    ##########################################
+    fig.add_trace(
+        go.Table(
+            header_values= ["Classifier" , "Sapm" , "Non-Spam"],
+            cells_values= [df.index ,df.Spam.values , df.NonSpam.values ] , columnwidth = [0.55 , 0.2 , 0.25]
+        ),  row=1, col=1)
+    ##########################################
+    fig.add_trace(
+        go.Table(
+            header_values= ["Statistic" , "Sapm" , "Non-Spam"],
+            cells_values= [avg.index, avg.Spam.values , avg.NonSpam.values ] , columnwidth = [0.33 , 0.33 , 0.33] 
+        ),  row=1, col=2)
 
-    with col1:
-        st.subheader("A cat")
-        st.dataframe(df)
+    ##########################################
 
-    with col2:
-        st.subheader("A dog")
-        st.dataframe(avg)
+    for r, c in zip(['NonSpam' , 'Spam'], colors):
+        fig.add_trace(
+            go.Bar(x= avg[0:1][r].index , y= avg[r].values , name= r, marker_color=c ,) 
+            ,row=1, col=3
+        )
 
-    with col3:
-        st.subheader("A dog")
-        st.dataframe(avg)
+    fig.update_layout(width = 900 ,
+        height=320,
+        showlegend=False,
+        barmode="stack") # title_text="Bitcoin mining stats for 180 days" ,
+    # fig.show()
+
+    st.plotly_chart(fig, theme=None)

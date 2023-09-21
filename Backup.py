@@ -104,7 +104,7 @@ paragraph = """
 
 paragraph2 = """
 <p><strong><u>Dedication</u></strong></p>
-<p>A very special thanks to my guide Prof. Dr. Hiren Joshi, and each member of the Department of Computer Science, Gujarat University. They helped me achieve nothing less than excellence in this work. I hope that this site will be useful to society as a whole and contribute to helping consumers make informed decisions and improving the credibility of online reviews. In the end, I declare that this website is my own original and independent work and does not infringe upon anyone&rsquo;s copyright or violate any other intellectual property rights.</p>
+<p style="text-align: justify;">A very special thanks to my guide Prof. Dr. Hiren Joshi, and each member of the Department of Computer Science, Gujarat University. They helped me achieve nothing less than excellence in this work. I hope that this site will be useful to society as a whole and contribute to helping consumers make informed decisions and improving the credibility of online reviews. In the end, I declare that this website is my own original and independent work and does not infringe upon anyone&rsquo;s copyright or violate any other intellectual property rights.</p>
 """
 
 about = """
@@ -136,9 +136,12 @@ p3 = """
 
 
 with st.sidebar:
-    st.sidebar.image("Asset_2.png" )
+    col1, col2 = st.columns(2)
+    with col1:
+        st.sidebar.image("Asset_2.png" ,width= 10)
     # st.sidebar.image("Logo.png", use_column_width=True )
-    st.title(" :blue[Hybrid Spam Checker]")
+    with col2:
+        st.title(" :blue[Hybrid Spam Checker]")
     st.sidebar.image("Logo.png" )
 
 

@@ -151,7 +151,9 @@ with st.sidebar:
     # st.sidebar.image("Logo.png", use_column_width=True )
     st.title(" :blue[Hybrid Spam Checker]")
     st.sidebar.image("Logo.png" )
-
+    
+    new_title = '<p style="font-family:Calibri (Body); color:#00B0F0; font-size: 14px;">Designed by</p>'
+    st.markdown(new_title, unsafe_allow_html=True)
 
     # st.caption("Maysara Mazin Alsaad (PhD Candidate)")
     # st.write(paragraph)
@@ -159,6 +161,8 @@ with st.sidebar:
     st.write(paragraph, unsafe_allow_html=True)
     st.write(paragraph2, unsafe_allow_html=True)
     st.write(p3, unsafe_allow_html=True)
+
+
 
 prompt = st.chat_input("Say something")
 if prompt:
@@ -185,6 +189,7 @@ if prompt:
     df['Spam'] = df['Spam'].apply( lambda x : str(round (x,1)) + '%')
     avg['NonSpam'] = avg['NonSpam'].apply( lambda x : str(round (x,1)) + '%')
     avg['Spam'] = avg['Spam'].apply( lambda x : str(round (x ,1)) + '%')
+    avg = avg.rename( index={'mean': 'Probability Average'})
 
 
     if CL == "Spam":
@@ -200,8 +205,8 @@ if prompt:
     fig = make_subplots(
         rows=1, cols=3,
         specs=[[{"type": "table"}, {"type": "table"} , {"type": "bar"}]], 
-        vertical_spacing=0.1,column_widths=[0.6, 0.3 , 0.1],
-        subplot_titles=("The probabilities of classifiers", "Statistics", "Average"))
+        vertical_spacing=0.1,column_widths=[0.45, 0.45 , 0.1],
+        subplot_titles=("The probabilities of classifiers", "The Probability Average of Classifers", "Average"))
     ##########################################
     fig.add_trace(
         go.Table(
@@ -212,7 +217,7 @@ if prompt:
     fig.add_trace(
         go.Table(
             header_values= ["Statistic" , "Sapm" , "Non-Spam"],
-            cells_values= [avg.index, avg.Spam.values , avg.NonSpam.values ] , columnwidth = [0.33 , 0.33 , 0.33] 
+            cells_values= [avg[0:1].index, avg[0:1].Spam.values , avg[0:1].NonSpam.values ] , columnwidth = [0.45 , 0.27 , 0.27] 
         ),  row=1, col=2)
 
     ##########################################
